@@ -16,7 +16,7 @@ const BackgroundWrapper = styled.div`
 const QuestionContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 60%;
+  width: 70%;
   height: 100%;
   border: 2px white;
   justify-content: space-evenly;
@@ -34,24 +34,27 @@ const Text = styled.div`
     font-size: 40px;
     line-height: 160%;
     color: white;
+    text-align: center;
+
+    @media only screen and (max-width: 600px) {
+      font-size: 32px;
+    }
   }
 
   & > .answerText {
-    /* H2 / Bold / 32px */
-
     font-family: 'Mulish';
     font-style: normal;
     font-weight: 700;
     font-size: 32px;
     line-height: 140%;
-    /* identical to box height, or 45px */
-
+    text-align: center;
     display: flex;
     align-items: center;
-
-    /* White */
-
     color: white;
+
+    @media only screen and (max-width: 600px) {
+      font-size: 26px;
+    }
   }
 `
 
