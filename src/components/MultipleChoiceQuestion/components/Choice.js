@@ -24,6 +24,7 @@ const ChoiceContainer = styled.div`
 
 const Choice = ({
   options,
+  solved,
 }) => {
   const [selectedOption, setSelectedOption] = useState(options[0].id);
   return (
@@ -35,6 +36,7 @@ const Choice = ({
           optionsLength={options.length}
           selected={option.id === selectedOption}
           setSelectedOption={setSelectedOption}
+          solved={solved}
         />
       ))}
     </ChoiceContainer>
@@ -43,6 +45,7 @@ const Choice = ({
 
 Choice.propTypes = {
   options: PropTypes.array.isRequired,
+  solved: PropTypes.bool.isRequired,
 }
 
 export default Choice;

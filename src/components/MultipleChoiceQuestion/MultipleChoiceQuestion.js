@@ -62,7 +62,7 @@ const MultipleChoiceQuestion = ({
   questionPrompt,
   choices,
 }) => {
-  const [answeredCorrectly, setAnsweredCorrectly] = useState(false);
+  const [solved, setSolved] = useState(false);
 
   useEffect(() => {
     // TODO: Map choices, get how many are correct
@@ -76,11 +76,11 @@ const MultipleChoiceQuestion = ({
         </Text>
         {choices.map(choice => (
           <div>
-            <Choice options={choice.options} key={choice.id} />
+            <Choice options={choice.options} solved={solved} key={choice.id} />
           </div>
         ))}
         <Text>
-          <h2 className="answerText">{`The answer is ${answeredCorrectly ? 'correct!' : 'incorrect'}`}</h2>
+          <h2 className="answerText">{`The answer is ${solved ? 'correct!' : 'incorrect'}`}</h2>
         </Text>
       </QuestionContainer>
     </BackgroundWrapper>

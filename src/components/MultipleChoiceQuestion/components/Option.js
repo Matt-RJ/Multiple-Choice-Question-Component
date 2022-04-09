@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const OptionContainer = styled.div`
+const OptionContainer = styled.button`
   display: flex;
   font-family: 'Mulish';
   font-style: normal;
@@ -15,6 +15,8 @@ const OptionContainer = styled.div`
   flex-basis: 0;
   padding-left: 16px;
   padding-right: 16px;
+  background-color: transparent;
+  border: 0;
 
   & h4 {
     margin-top: 16px;
@@ -60,10 +62,16 @@ const Option = ({
   optionsLength,
   selected,
   setSelectedOption,
+  solved,
 }) => {
+  const select = () => {
+    if (!solved) {
+      setSelectedOption(option.id);
+    }
+  }
   return (
     <OptionContainer
-      onClick={() => setSelectedOption(option.id)}
+      onClick={select}
       optionsLength={optionsLength}
       className={selected ? 'selectedOption' : 'option'}
     >
@@ -75,10 +83,11 @@ const Option = ({
 };
 
 Option.propTypes = {
+  solved: PropTypes.bool.isRequired,
   option: PropTypes.shape({
     text: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
-  })
+  }).isRequired,
 }
 
 export default Option;
