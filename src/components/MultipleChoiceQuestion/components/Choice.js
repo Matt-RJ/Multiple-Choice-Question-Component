@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -66,12 +66,21 @@ const Slider = styled.div(props => {
 const Choice = ({
   options,
   solved,
+  providedAnswers,
+  setProvidedAnswers,
+  choiceId,
 }) => {
   const [selectedOption, setSelectedOption] = useState(options[0].id);
   const sliderRef = useRef(null);
 
   const selectedOptionIdx = options.findIndex(option => option.id === selectedOption);
   const sliderHeight = sliderRef?.current?.clientHeight || 0;
+
+  useEffect(() => {
+    const newAnswers = { ...providedAnswers };
+    newAnswers[choiceId] = selectedOption;
+    setProvidedAnswers(newAnswers);
+  }, [selectedOption]);
 
   return (
     <ChoiceContainer>
@@ -98,6 +107,9 @@ const Choice = ({
 Choice.propTypes = {
   options: PropTypes.array.isRequired,
   solved: PropTypes.bool.isRequired,
+  providedAnswers: PropTypes.object.isRequired,
+  setProvidedAnswers: PropTypes.func.isRequired,
+  choiceId: PropTypes.string.isRequired,
 }
 
 export default Choice;

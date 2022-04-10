@@ -14,51 +14,56 @@ const GlobalStyle = createGlobalStyle`
 `
 
 const QUESTION_DATA = {
-  questionPrompt: 'An animal cell contains:',
+  questionPrompt: 'An animal cell has:',
   answers: {
     c1: 'o2',
     c2: 'o1',
     c3: 'o1',
-    c4: 'o2',
   },
   choices: [
     {
       id: 'c1',
       options: [
-        { text: 'Cell wall', id: 'o1' },
+        { text: 'A cell wall', id: 'o1' },
         { text: 'Ribosomes', id: 'o2' },
-        { text: 'Large vacuole', id: 'o3' },
+        { text: 'A large vacuole', id: 'o3' },
+        { text: 'A sturdy, rectangular shape', id: 'o4' },
       ],
     },
     {
       id: 'c2',
       options: [
         { text: 'Cytoplasm', id: 'o1' },
-        { text: 'Chloroplast', id: 'o2' },
+        { text: 'Chloroplasts', id: 'o2' },
       ],
     },
     {
       id: 'c3',
       options: [
-        { text: 'Partially permeable membrane', id: 'o1' },
-        { text: 'Impermeable membrane', id: 'o2' },
-      ],
-    },
-    {
-      id: 'c4',
-      options: [
-        { text: 'Cellulose', id: 'o1' },
-        { text: 'Mitochondria', id: 'o2' },
+        { text: 'A partially permeable membrane', id: 'o1' },
+        { text: 'An impermeable membrane', id: 'o2' },
+        { text: 'No membrane', id: 'o3' },
       ],
     },
   ],
 };
 
 function App() {
+  // Randomizing order of choices and options for each choice
+  QUESTION_DATA.choices.sort(() => Math.random() - 0.5).map((choice) => {
+    return {
+      ...choice,
+      options: choice.options.sort(() => Math.random() - 0.5),
+    }
+  });
   return (
     <>
       <GlobalStyle />
-      <MultipleChoiceQuestion {...QUESTION_DATA} />
+      <MultipleChoiceQuestion
+        questionPrompt={QUESTION_DATA.questionPrompt}
+        choices={QUESTION_DATA.choices}
+        answers={QUESTION_DATA.answers}
+      />
     </>
   );
 }

@@ -76,11 +76,25 @@ const MultipleChoiceQuestion = ({
   answers,
 }) => {
   const [solved, setSolved] = useState(false);
-  const [correctAnswers, setCorrectAnswers] = useState(null);
+  const [providedAnswers, setProvidedAnswers] = useState({});
 
   useEffect(() => {
-    // TODO: Map choices, get how many are correct
-  });
+    // Proportion of correct answers, ranging from 0 to 1, rounded to 2 decimal places
+    const getCorrectAnswerProportion = (realAnswers, givenAnswers) => {
+      const totalRealAnswers = Object.keys(realAnswers).length;
+      let totalCorrectAnswers = 0;
+      Object.keys(realAnswers).forEach((answerKey) => {
+        if (answers[answerKey] === givenAnswers[answerKey]) {
+          totalCorrectAnswers++;
+        }
+      });
+      return Math.round((totalCorrectAnswers / totalRealAnswers) * 100) / 100;
+    }
+
+    if (getCorrectAnswerProportion(answers, providedAnswers) === 1) {
+      setSolved(true);
+    }
+  }, [answers, providedAnswers]);
 
   return (
     <BackgroundWrapper>
@@ -90,7 +104,14 @@ const MultipleChoiceQuestion = ({
         </Text>
         {choices.map(choice => (
           <ChoicesContainer>
-            <Choice options={choice.options} solved={solved} key={choice.id} />
+            <Choice
+              options={choice.options}
+              solved={solved}
+              providedAnswers={providedAnswers}
+              setProvidedAnswers={setProvidedAnswers}
+              key={choice.id}
+              choiceId={choice.id}
+            />
           </ChoicesContainer>
         ))}
         <Text>
