@@ -11,15 +11,19 @@ const BackgroundWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: auto;
+  margin: auto;
 `;
 
 const QuestionContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 70%;
   height: 100%;
   border: 2px white;
   justify-content: space-evenly;
+  @media only screen and (max-width: 600px) {
+    gap: 10px;
+  }
 `
 const Text = styled.div`
   display: flex;
@@ -58,11 +62,21 @@ const Text = styled.div`
   }
 `
 
+const ChoicesContainer = styled.div`
+  padding-left: 10px;
+  padding-right: 10px;
+  @media only screen and (max-width: 600px) {
+    gap: 10px;
+  }
+`
+
 const MultipleChoiceQuestion = ({
   questionPrompt,
   choices,
+  answers,
 }) => {
   const [solved, setSolved] = useState(false);
+  const [correctAnswers, setCorrectAnswers] = useState(null);
 
   useEffect(() => {
     // TODO: Map choices, get how many are correct
@@ -75,9 +89,9 @@ const MultipleChoiceQuestion = ({
           <h1 className="questionText">{questionPrompt}</h1>
         </Text>
         {choices.map(choice => (
-          <div>
+          <ChoicesContainer>
             <Choice options={choice.options} solved={solved} key={choice.id} />
-          </div>
+          </ChoicesContainer>
         ))}
         <Text>
           <h2 className="answerText">{`The answer is ${solved ? 'correct!' : 'incorrect'}`}</h2>
@@ -90,6 +104,7 @@ const MultipleChoiceQuestion = ({
 MultipleChoiceQuestion.propTypes = {
   questionPrompt: PropTypes.string.isRequired,
   choices: PropTypes.arrayOf(PropTypes.object).isRequired,
+  answers: PropTypes.object.isRequired,
 }
 
 export default MultipleChoiceQuestion;

@@ -9,20 +9,16 @@ const OptionContainer = styled.button`
   font-weight: 700;
   font-size: 24px;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   text-align: center;
   flex-grow: ${props => props.optionsLength || 2};
   flex-basis: 0;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding: 16px;
   background-color: transparent;
   border: 0;
-
-  & h4 {
-    margin-top: 16px;
-    margin-bottom: 16px;
-    line-height: 100%;
-  }
+  line-height: 100%;
+  align-items: center;
+  z-index: 5001;
 
   &.option {
     color: #FFFFFF;
@@ -30,16 +26,15 @@ const OptionContainer = styled.button`
 
   &.selectedOption, &.selectedOptionBackground {
     border-radius: 100px;
-    background: #F8CAA3;
+    /* background: #F8CAA3; */
+    align-self: stretch;
     color: #9F938B;
   }
 
   @media only screen and (max-width: 600px) {
-    & h4 {
-      font-size: 0.9rem;
-      margin-top: 6px;
-      margin-bottom: 6px;
-    }
+    font-size: 0.9rem;
+    /* margin-top: 6px; */
+    /* margin-bottom: 6px; */
 
     border-radius: 0;
 
@@ -75,9 +70,7 @@ const Option = ({
       optionsLength={optionsLength}
       className={selected ? 'selectedOption' : 'option'}
     >
-      <h4>
-        {option.text}
-      </h4>
+      {option.text}
     </OptionContainer>
   );
 };
