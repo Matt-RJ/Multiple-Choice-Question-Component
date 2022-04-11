@@ -7,8 +7,6 @@ import Option from './Option';
 const ChoiceContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-  align-items: stretch;
   border: ${props => `2px solid ${
     props.proportionalThemes[props.themeIdx].borderColor
   }`};

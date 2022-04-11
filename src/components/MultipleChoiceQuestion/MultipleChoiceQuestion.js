@@ -25,7 +25,8 @@ const QuestionContainer = styled.div`
   flex-direction: column;
   height: 100%;
   border: 2px white;
-  justify-content: space-evenly;
+  /* justify-content: space-evenly; */
+  gap: 20px;
   @media only screen and (max-width: 600px) {
     gap: 10px;
   }
