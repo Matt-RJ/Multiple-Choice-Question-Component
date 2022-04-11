@@ -21,6 +21,7 @@ Vertical layout:
 * Support for 2, 3, or more options per choice, and any number of choices per question
 * Animated background sliders
 * Responsive layout
+* Changing theme colours depending on how close to the final answer one is
 * Randomized order of choices & options
 * The question prevents further changes once solved
 
