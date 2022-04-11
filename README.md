@@ -30,3 +30,7 @@ Vertical layout:
 * Bugs:
   * Sometimes when resizing the window to < 600px wide, the sliders get misplaced in the vertical layout. This can be fixed by making any selection, forcing the element to re-render.
 * When randomizing options, there is a chance that all of the correct options will be the first option in each choice, leading to the question being 'solved' instantly.
+
+## Further Work
+1. Fix resizing bug mentioned above, possibly by detecting the switch from horizontal to vertical and forcing the component to re-render and to recalculate where the sliders should be.
+2. Add tests
