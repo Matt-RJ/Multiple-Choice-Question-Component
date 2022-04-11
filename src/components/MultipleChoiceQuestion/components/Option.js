@@ -24,18 +24,12 @@ const OptionContainer = styled.button`
     color: #FFFFFF;
   }
 
-  &.selectedOption, &.selectedOptionBackground {
-    border-radius: 100px;
-    /* background: #F8CAA3; */
-    align-self: stretch;
-    color: #9F938B;
+  &.selectedOption {
+    color: ${props => props.proportionalThemes[props.themeIdx].selectedTextColor};
   }
 
   @media only screen and (max-width: 600px) {
     font-size: 0.9rem;
-    /* margin-top: 6px; */
-    /* margin-bottom: 6px; */
-
     border-radius: 0;
 
     &.selectedOption:first-child {
@@ -58,17 +52,22 @@ const Option = ({
   selected,
   setSelectedOption,
   solved,
+  proportionalThemes,
+  themeIdx,
 }) => {
   const select = () => {
     if (!solved) {
       setSelectedOption(option.id);
     }
   }
+
   return (
     <OptionContainer
       onClick={select}
       optionsLength={optionsLength}
       className={selected ? 'selectedOption' : 'option'}
+      proportionalThemes={proportionalThemes}
+      themeIdx={themeIdx}
     >
       {option.text}
     </OptionContainer>
@@ -81,6 +80,13 @@ Option.propTypes = {
     text: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
   }).isRequired,
+  proportionalThemes: PropTypes.arrayOf(PropTypes.shape({
+    backgroundGradientStartColor: PropTypes.string.isRequired,
+    backgroundGradientEndColor: PropTypes.string.isRequired,
+    sliderBackgroundColor: PropTypes.string.isRequired,
+    selectedTextColor: PropTypes.string.isRequired,
+  })).isRequired,
+  themeIdx: PropTypes.number.isRequired,
 }
 
 export default Option;

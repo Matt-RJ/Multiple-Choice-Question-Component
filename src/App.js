@@ -48,6 +48,26 @@ const QUESTION_DATA = {
   ],
 };
 
+const proportionalThemes = [{
+  backgroundGradientStartColor: '#F6B868',
+  backgroundGradientEndColor: '#EE6B2D',
+  sliderBackgroundColor: '#F8CAA3',
+  selectedTextColor: '#9F938B',
+  borderColor: '#F9D29F',
+}, {
+  backgroundGradientStartColor: '#F1B496',
+  backgroundGradientEndColor: '#EA806A',
+  sliderBackgroundColor: '#F2CBBD',
+  selectedTextColor: '#E47958',
+  borderColor: '#FBFBFB',
+}, {
+  backgroundGradientStartColor: '#76E0C2',
+  backgroundGradientEndColor: '#59CADA',
+  sliderBackgroundColor: '#A5E7E2',
+  selectedTextColor: '#4CAD94',
+  borderColor: '#FBFBFB',
+}];
+
 function App() {
   // Randomizing order of choices and options for each choice
   QUESTION_DATA.choices.sort(() => Math.random() - 0.5).map((choice) => {
@@ -63,6 +83,7 @@ function App() {
         questionPrompt={QUESTION_DATA.questionPrompt}
         choices={QUESTION_DATA.choices}
         answers={QUESTION_DATA.answers}
+        proportionalThemes={proportionalThemes}
       />
     </>
   );

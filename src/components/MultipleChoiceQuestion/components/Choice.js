@@ -9,7 +9,9 @@ const ChoiceContainer = styled.div`
   flex-direction: row;
   justify-content: space-around;
   align-items: stretch;
-  border: 2px solid #F9D29F;
+  border: ${props => `2px solid ${
+    props.proportionalThemes[props.themeIdx].borderColor
+  }`};
   box-sizing: border-box;
   position: relative;
   border-radius: 100px;
@@ -43,7 +45,7 @@ const Slider = styled.div(props => {
   return {
     width: `${optionProportion}%`,
     'border-radius': '100px',
-    'background': '#F8CAA3',
+    'background': props.proportionalThemes[props.themeIdx].sliderBackgroundColor,
     left: '0',
     'margin-left': sliderOffset,
     display: 'block',
@@ -69,6 +71,8 @@ const Choice = ({
   providedAnswers,
   setProvidedAnswers,
   choiceId,
+  proportionalThemes,
+  themeIdx
 }) => {
   const [selectedOption, setSelectedOption] = useState(options[0].id);
   const sliderRef = useRef(null);
@@ -83,7 +87,10 @@ const Choice = ({
   }, [selectedOption]);
 
   return (
-    <ChoiceContainer>
+    <ChoiceContainer
+      proportionalThemes={proportionalThemes}
+      themeIdx={themeIdx}
+    >
       {options.map((option) => (
         <Option
           option={option}
@@ -92,6 +99,8 @@ const Choice = ({
           selected={option.id === selectedOption}
           setSelectedOption={setSelectedOption}
           solved={solved}
+          proportionalThemes={proportionalThemes}
+          themeIdx={themeIdx || 0}
         />
       ))}
       <Slider
@@ -99,6 +108,8 @@ const Choice = ({
         selectedOptionIdx={selectedOptionIdx}
         sliderHeight={sliderHeight}
         ref={sliderRef}
+        proportionalThemes={proportionalThemes}
+        themeIdx={themeIdx}
       />
     </ChoiceContainer>
   );
@@ -110,6 +121,13 @@ Choice.propTypes = {
   providedAnswers: PropTypes.object.isRequired,
   setProvidedAnswers: PropTypes.func.isRequired,
   choiceId: PropTypes.string.isRequired,
+  proportionalThemes: PropTypes.arrayOf(PropTypes.shape({
+    backgroundGradientStartColor: PropTypes.string.isRequired,
+    backgroundGradientEndColor: PropTypes.string.isRequired,
+    sliderBackgroundColor: PropTypes.string.isRequired,
+    selectedTextColor: PropTypes.string.isRequired,
+  })).isRequired,
+  themeIdx: PropTypes.number.isRequired,
 }
 
 export default Choice;

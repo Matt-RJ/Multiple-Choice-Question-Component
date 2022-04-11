@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -7,12 +7,17 @@ import Choice from './components/Choice';
 const BackgroundWrapper = styled.div`
   width: 100%;
   height: 100%;
-  background: linear-gradient(180deg, #F6B868 0%, #EE6B2D 100%);
+  background: ${props => `linear-gradient(180deg, ${
+    props.proportionalThemes[props.themeIdx].backgroundGradientStartColor
+  } 0%, ${
+    props.proportionalThemes[props.themeIdx].backgroundGradientEndColor} 100%)`
+  };
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: auto;
   margin: auto;
+  transition: all 3s;
 `;
 
 const QuestionContainer = styled.div`
@@ -74,10 +79,21 @@ const MultipleChoiceQuestion = ({
   questionPrompt,
   choices,
   answers,
+  proportionalThemes,
 }) => {
   const [solved, setSolved] = useState(false);
   const [providedAnswers, setProvidedAnswers] = useState({});
 
+  // Used to determine which color scheme to use, depending on how close to the answer one is
+  const [themeIdx, setThemeIdx] = useState(0);
+
+  useMemo(() => {
+    const startingAnswers = {};
+    choices.forEach((choice) => {
+      startingAnswers[choice.id] = choice.options[0].id;
+    });
+    setProvidedAnswers(startingAnswers);
+  }, [choices]);
   useEffect(() => {
     // Proportion of correct answers, ranging from 0 to 1, rounded to 2 decimal places
     const getCorrectAnswerProportion = (realAnswers, givenAnswers) => {
@@ -91,18 +107,33 @@ const MultipleChoiceQuestion = ({
       return Math.round((totalCorrectAnswers / totalRealAnswers) * 100) / 100;
     }
 
-    if (getCorrectAnswerProportion(answers, providedAnswers) === 1) {
+    const correctAnswerProportion = getCorrectAnswerProportion(answers, providedAnswers);
+
+    // Setting theme based on how close the answer is
+
+    // Maps a number 'num' with a value range fromMin-fromMax to the equivalent were it toMin-toMax
+    const mapRange = (num, fromMin, fromMax, toMin, toMax) => {
+      return (num - fromMin) * (toMax - toMin) / (fromMax - fromMin) + toMin;
+    }
+    const themeIdx = Math.round(mapRange(correctAnswerProportion, 0, 1, 1, proportionalThemes.length)) -1;
+    setThemeIdx(themeIdx);
+
+    if (correctAnswerProportion === 1) {
       setSolved(true);
     }
-  }, [answers, providedAnswers]);
+  }, [answers, proportionalThemes.length, providedAnswers]);
 
   return (
-    <BackgroundWrapper>
+    <BackgroundWrapper
+      proportionalThemes={proportionalThemes}
+      themeIdx={themeIdx}
+    >
       <QuestionContainer>
         <Text>
           <h1 className="questionText">{questionPrompt}</h1>
         </Text>
-        {choices.map(choice => (
+        {choices.map(choice => {
+          return (
           <ChoicesContainer>
             <Choice
               options={choice.options}
@@ -111,9 +142,11 @@ const MultipleChoiceQuestion = ({
               setProvidedAnswers={setProvidedAnswers}
               key={choice.id}
               choiceId={choice.id}
+              proportionalThemes={proportionalThemes}
+              themeIdx={themeIdx || 0}
             />
           </ChoicesContainer>
-        ))}
+        )})}
         <Text>
           <h2 className="answerText">{`The answer is ${solved ? 'correct!' : 'incorrect'}`}</h2>
         </Text>
@@ -126,6 +159,12 @@ MultipleChoiceQuestion.propTypes = {
   questionPrompt: PropTypes.string.isRequired,
   choices: PropTypes.arrayOf(PropTypes.object).isRequired,
   answers: PropTypes.object.isRequired,
+  proportionalThemes: PropTypes.arrayOf(PropTypes.shape({
+    backgroundGradientStartColor: PropTypes.string.isRequired,
+    backgroundGradientEndColor: PropTypes.string.isRequired,
+    sliderBackgroundColor: PropTypes.string.isRequired,
+    selectedTextColor: PropTypes.string.isRequired,
+  })).isRequired,
 }
 
 export default MultipleChoiceQuestion;
